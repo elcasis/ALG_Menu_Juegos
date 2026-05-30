@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALG-ACADEMY · Algoritmos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d14;
+      --card-bg: #13131e;
+      --card-border: rgba(255,255,255,0.07);
+      --card-hover: #1a1a28;
+      --text: #e8e6f0;
+      --muted: #7b7890;
+      --accent: #a78bfa;
+      --accent2: #60a5fa;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 3rem 1rem 4rem;
+    }
+
+    /* subtle dot grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .header-brand {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.3rem;
+    }
+
+    .header-sub {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 5px 14px;
+    }
+
+    .header-hint::before {
+      content: '⬡';
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.6rem 1.75rem;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .card-1::before { background: linear-gradient(90deg, #a78bfa, #60a5fa); }
+    .card-2::before { background: linear-gradient(90deg, #34d399, #60a5fa); }
+    .card-3::before { background: linear-gradient(90deg, #fb923c, #facc15); }
+    .card-4::before { background: linear-gradient(90deg, #f472b6, #a78bfa); }
+
+    .card:hover {
+      background: var(--card-hover);
+      border-color: rgba(255,255,255,0.14);
+      transform: translateY(-2px);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    /* top row */
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .card-emoji {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    /* title */
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    /* description */
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* tags */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .card-1 .tag { color: #c4b5fd; border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+    .card-2 .tag { color: #6ee7b7; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
+    .card-3 .tag { color: #fdba74; border-color: rgba(251,146,60,0.3); background: rgba(251,146,60,0.08); }
+    .card-4 .tag { color: #f9a8d4; border-color: rgba(244,114,182,0.3); background: rgba(244,114,182,0.08); }
+
+    /* cta */
+    .card-cta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-top: 4px;
+      border-top: 1px solid var(--card-border);
+      transition: gap 0.2s;
+      gap: 6px;
+    }
+
+    .card-1 .card-cta { color: #a78bfa; }
+    .card-2 .card-cta { color: #34d399; }
+    .card-3 .card-cta { color: #fb923c; }
+    .card-4 .card-cta { color: #f472b6; }
+
+    .card:hover .card-cta { gap: 10px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .header { animation: fadeUp 0.5s ease both; }
+    .card   { animation: fadeUp 0.5s ease both; }
+    .card-1 { animation-delay: 0.08s; }
+    .card-2 { animation-delay: 0.16s; }
+    .card-3 { animation-delay: 0.24s; }
+    .card-4 { animation-delay: 0.32s; }
+    footer  { animation: fadeUp 0.5s 0.42s ease both; }
+
+    @media (max-width: 500px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <p class="header-eyebrow">Algoritmos · Ordenación y Recurrencias</p>
+      <h1 class="header-brand">ALG-ACADEMY</h1>
+      <p class="header-sub">Algoritmos de Ordenación y Análisis</p>
+      <span class="header-hint">Selecciona un ejercicio para comenzar</span>
+    </header>
+
+    <div class="grid">
+
+      <a class="card card-1" href="https://elcasis.github.io/ALG_Juego_burbuja/" target="_blank">
+        <div class="card-top">
+          <span class="card-num">MÓDULO 01</span>
+          <span class="card-emoji">🫧</span>
+        </div>
+        <h2 class="card-title">Ordenación Burbuja</h2>
+        <p class="card-desc">Practica el algoritmo de burbuja comparando e intercambiando elementos adyacentes hasta que el array quede ordenado.</p>
+        <div class="card-tags">
+          <span class="tag">Burbuja</span>
+          <span class="tag">O(n²)</span>
+          <span class="tag">Intercambio</span>
+        </div>
+        <div class="card-cta">Empezar →</div>
+      </a>
+
+      <a class="card card-2" href="https://elcasis.github.io/ALG_Juego_seleccion/" target="_blank">
+        <div class="card-top">
+          <span class="card-num">MÓDULO 02</span>
+          <span class="card-emoji">🎯</span>
+        </div>
+        <h2 class="card-title">Ordenación Selección</h2>
+        <p class="card-desc">Aprende el algoritmo de selección buscando el mínimo del subarreglo no ordenado y colocándolo en su posición correcta.</p>
+        <div class="card-tags">
+          <span class="tag">Selección</span>
+          <span class="tag">O(n²)</span>
+          <span class="tag">Mínimo</span>
+        </div>
+        <div class="card-cta">Empezar →</div>
+      </a>
+
+      <a class="card card-3" href="https://elcasis.github.io/ALG_Juego_arboles/" target="_blank">
+        <div class="card-top">
+          <span class="card-num">MÓDULO 03</span>
+          <span class="card-emoji">🌳</span>
+        </div>
+        <h2 class="card-title">Árboles</h2>
+        <p class="card-desc">Domina las estructuras de árbol: BST, recorridos inorden, preorden y postorden, e inserciones y búsquedas.</p>
+        <div class="card-tags">
+          <span class="tag">BST</span>
+          <span class="tag">Recorridos</span>
+          <span class="tag">Estructuras</span>
+        </div>
+        <div class="card-cta">Empezar →</div>
+      </a>
+
+      <a class="card card-4" href="https://elcasis.github.io/Juego_Teorema_maestro_2/" target="_blank">
+        <div class="card-top">
+          <span class="card-num">MÓDULO 04</span>
+          <span class="card-emoji">👑</span>
+        </div>
+        <h2 class="card-title">Teorema Maestro</h2>
+        <p class="card-desc">Aplica el Teorema Maestro para calcular la complejidad de algoritmos recursivos de tipo divide y vencerás.</p>
+        <div class="card-tags">
+          <span class="tag">Teorema Maestro</span>
+          <span class="tag">Recurrencias</span>
+          <span class="tag">Divide y vencerás</span>
+        </div>
+        <div class="card-cta">Empezar →</div>
+      </a>
+
+    </div>
+
+    <footer>UNIR · Grado en Ciberseguridad · Algoritmos</footer>
+
+  </div>
+</body>
+</html>
